@@ -38,6 +38,18 @@ module.exports = {
             console.log(err);
             return callback(null);
         });
+    },
+
+    hasTicketNumber : function(text) {
+        var matchArr = ["RITM","TASK","CHG","INC"];
+        // console.log(t.includes("RITM"));
+    
+        for( a of matchArr ) {
+            if(text.includes(a)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

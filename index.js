@@ -42,7 +42,7 @@ slackEvents.on('message', (event) => {
     //   })
     //   .catch(console.error);
 
-    if (event.text.toLowerCase().contains("approval")) {
+    if (snUtils.hasTicketNumber(event.text.toLowerCase())) {
       snUtils.getTicketInfo(event.text, (res) => {
         if(res) web.chat.postMessage({
           channel: event.channel,
