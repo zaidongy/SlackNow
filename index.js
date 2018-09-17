@@ -26,16 +26,18 @@ app.get('/', (req, res) => {
 });
 
 // Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
-slackEvents.on('message', (event)=> {
+slackEvents.on('message', (event) => {
   console.log(event);
-  web.chat.postMessage({
-    channel: event.channel,
-    text: "You said: " + event.text
-  })
-  .then((res) => {
-    console.log("Message sent: ", res.ts);
-  })
-  .catch(console.error);
+  if (event.subtype != 'bot_message') {
+    web.chat.postMessage({
+      channel: event.channel,
+      text: "You said: " + event.text
+    })
+      .then((res) => {
+        console.log("Message sent: ", res.ts);
+      })
+      .catch(console.error);
+  }
   // console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
 
