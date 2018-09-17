@@ -12,8 +12,6 @@
   "dependencies": {
     "@slack/client": "^4.6.0",
     "@slack/events-api": "^2.1.0",
-    "localtunnel": "^1.9.1",
-    "ngrok": "^3.0.1",
     "npm": "^6.4.1"
   },
   "engines": {
