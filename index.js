@@ -41,8 +41,9 @@ slackEvents.on('message', (event) => {
     //     console.log("Message sent: ", res.ts);
     //   })
     //   .catch(console.error);
+    // console.log(event.text.toLowerCase());
 
-    if (snUtils.hasTicketNumber(event.text.toLowerCase())) {
+    if (snUtils.hasTicketNumber(event.text.toUpperCase())) {
       snUtils.getTicketInfo(event.text, (res) => {
         if(res) web.chat.postMessage({
           channel: event.channel,
@@ -57,7 +58,7 @@ slackEvents.on('message', (event) => {
     else {
       web.chat.postMessage({
         channel: event.channel,
-        text: "I'm not sure what you mean, please try to include a ticket number."
+        text: "Hey there, I'm able to lookup infromation from ServiceNow such as ticket description and show approvals."
       })
       .then(res => {
         console.log("Query not understood: ", event.text);
