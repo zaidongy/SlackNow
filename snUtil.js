@@ -40,7 +40,7 @@ module.exports = {
         });
     },
     
-    hasTicketNumber: function() {
+    hasTicketNumber: function(text) {
         var matchArr = ["RITM", "TASK", "CHG", "INC"];
         for (a of matchArr) {
             if (text.includes(a)) {
