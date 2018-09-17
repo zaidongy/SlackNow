@@ -1,3 +1,4 @@
+var path = require('path');
 const http = require('http');
 var secret = '115cd13ebaa26ae73102317a746967b6';
 // Initialize using signing secret from environment variables
@@ -15,11 +16,13 @@ const app = express();
 app.use('/slack/events', slackEvents.expressMiddleware());
 
 app.get('/', (req, res) => {
-    res.send("Testing Slack Integration");
+    res.send("ServiceNow Slack Integration Endpoint: https://crispychris.herokuapp.com/slack/events");
+    // return res.status(200).sendFile(path.resolve(__dirname, "example.html"));
 });
 
 // Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
 slackEvents.on('message', (event)=> {
+  console.log(event);
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
 
