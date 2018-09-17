@@ -1,0 +1,16 @@
+{
+  "name": "slack5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Yang",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/client": "^4.6.0",
+    "@slack/events-api": "^2.1.0",
+    "npm": "^6.4.1"
+  }
+}
