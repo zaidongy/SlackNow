@@ -3,7 +3,7 @@ const http = require('http');
 
 // Initialize WebClient API
 const { WebClient } = require('@slack/client');
-const token = process.env.SLACK_TOKEN || 'xoxb-318891989605-422852088948-auin84ORLFHi1FdR5gEVmTGB';
+const token = process.env.SLACK_TOKEN;
 const web = new WebClient(token);
 
 // Initialize using signing secret from environment variables
@@ -15,6 +15,9 @@ const port = process.env.PORT || 3000;
 // Initialize an Express application
 const express = require('express');
 const app = express();
+
+// Initialize a SN Utility Object
+const snUtils = require("./snUtil");
 
 // Mount the event handler on a route
 // NOTE: you must mount to a path that matches the Request URL that was configured earlier
@@ -29,20 +32,34 @@ app.get('/', (req, res) => {
 slackEvents.on('message', (event) => {
   console.log(event);
   if (event.subtype != 'bot_message') {
-    web.chat.postMessage({
-      channel: event.channel,
-      text: "You said: " + event.text
-    })
+
+    // web.chat.postMessage({
+    //   channel: event.channel,
+    //   text: "You said: " + event.text
+    // })
+    //   .then((res) => {
+    //     console.log("Message sent: ", res.ts);
+    //   })
+    //   .catch(console.error);
+
+    if (event.text.toLowerCase().contains("approval")) {
+      snUtils.getTicketInfo(event.text, (res) => {
+        if(res) web.chat.postMessage({
+          channel: event.channel,
+          text: `${res.number}: ${res.description}`
+        })
       .then((res) => {
         console.log("Message sent: ", res.ts);
       })
-      .catch(console.error);
+      .catch(console.error);;
+      });
+    }
   }
   // console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
 
 slackEvents.on('reaction_added', (event) => {
-  console.log(event);
+  console.log(`User ${event.user} reacted with ${event.reaction}`);
 });
 
 // Handle errors (see `errorCodes` export)

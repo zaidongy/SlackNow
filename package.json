@@ -12,6 +12,8 @@
   "dependencies": {
     "@slack/client": "^4.6.0",
     "@slack/events-api": "^2.1.0",
+    "Buffer": "0.0.0",
+    "axios": "^0.18.0",
     "npm": "^6.4.1"
   },
   "engines": {
