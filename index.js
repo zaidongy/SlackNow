@@ -51,8 +51,18 @@ slackEvents.on('message', (event) => {
       .then((res) => {
         console.log("Message sent: ", res.ts);
       })
-      .catch(console.error);;
+      .catch(console.error);
       });
+    }
+    else {
+      web.chat.postMessage({
+        channel: event.channel,
+        text: "I'm not sure what you mean, please try to include a ticket number."
+      })
+      .then(res => {
+        console.log("Query not understood: ", event.text);
+      })
+      .catch(console.error);
     }
   }
   // console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
