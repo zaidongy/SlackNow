@@ -30,25 +30,16 @@ app.get('/', (req, res) => {
 
 // Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
 slackEvents.on('message', (event) => {
-  console.log(event);
+  // console.log(event);
   if (event.subtype != 'bot_message') {
-
-    // web.chat.postMessage({
-    //   channel: event.channel,
-    //   text: "You said: " + event.text
-    // })
-    //   .then((res) => {
-    //     console.log("Message sent: ", res.ts);
-    //   })
-    //   .catch(console.error);
-    console.log(event.text.toUpperCase());
     
+    //get the ticketNumber and lookup information on it
     var ticket = snUtils.getTicketNumber(event.text);
     if (ticket) {
       snUtils.getTicketInfo(ticket, (res) => {
         if(res) web.chat.postMessage({
           channel: event.channel,
-          text: `${res.number}: ${res.description}`
+          text: `${res.number}: ${res.short_description}`
         })
       .then((res) => {
         console.log("Message sent: ", res.ts);
