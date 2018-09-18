@@ -41,10 +41,11 @@ slackEvents.on('message', (event) => {
     //     console.log("Message sent: ", res.ts);
     //   })
     //   .catch(console.error);
-    // console.log(event.text.toLowerCase());
-
-    if (snUtils.hasTicketNumber(event.text.toUpperCase())) {
-      snUtils.getTicketInfo(event.text, (res) => {
+    console.log(event.text.toUpperCase());
+    
+    var ticket = snUtils.getTicketNumber(event.text);
+    if (ticket) {
+      snUtils.getTicketInfo(ticket, (res) => {
         if(res) web.chat.postMessage({
           channel: event.channel,
           text: `${res.number}: ${res.description}`

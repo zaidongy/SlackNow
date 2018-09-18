@@ -40,14 +40,17 @@ module.exports = {
         });
     },
     
-    hasTicketNumber: function(text) {
+    getTicketNumber: function(text) {
         var matchArr = ["RITM", "TASK", "CHG", "INC"];
-        for (a of matchArr) {
-            if (text.includes(a)) {
-                return true;
+        var textArr = text.split(' ');
+        for (word of textArr) {
+            for (m of matchArr) {
+                if (word.startsWith(m)) {
+                    return word;
+                }
             }
         }
-        return false;
+        return null;
     }
 }
 
