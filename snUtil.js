@@ -51,6 +51,19 @@ module.exports = {
             }
         }
         return null;
+    },
+
+        // Create Channel
+    createIncidentChannel: function(channelName, callback) {
+        var token = process.env.SLACK_OAUTH_ACCESS_TOKEN;
+        const url = 'https://slack.com/api/groups.create';
+        const body = {
+            "token": "Bearer " + token,
+            "name": channelName
+        };
+        axios.post(url, body)
+        .then(req => callback(res))
+        .catch(console.error);
     }
 }
 
