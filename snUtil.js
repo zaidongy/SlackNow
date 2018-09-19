@@ -10,7 +10,7 @@ module.exports = {
 
         var table = _getTable(ticketNumber);
         // console.log(table);
-        console.log(ticketNumber);
+        // console.log(ticketNumber);
         if (!table) return callback(null);
 
         const url = `https://csmcstage.service-now.com/api/now/table/${table}?sysparm_query=number%3D${ticketNumber}&sysparm_limit=1`;

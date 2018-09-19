@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 
 // Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
 slackEvents.on('message', (event) => {
-  // console.log(event);
+  console.log(event);
   if (event.subtype != 'bot_message') {
     
     //get the ticketNumber and lookup information on it
