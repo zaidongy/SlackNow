@@ -28,6 +28,58 @@ app.get('/', (req, res) => {
     // return res.status(200).sendFile(path.resolve(__dirname, "example.html"));
 });
 
+app.post('/api/incident', (inc) => {
+  console.log(inc);
+  snUtils.createIncidentChannel(inc.name, res => {
+    var message = {
+      "channel": res.group.id,
+      "text": inc.number,
+      "attachments": [
+        {
+          "fallback": `${inc.number}: ${inc.short_description}`,
+          "color": "danger",
+          "pretext": `Priority 1 ${inc.number} has been created.`,
+          "title": inc.number,
+          "title_link": inc.sn_link,
+          "fields": [
+            {
+              "title": "State",
+              "value": inc.state
+            },
+            {
+              "title": "Assigned to",
+              "value": inc.assigned_to
+            },
+            {
+              "title": "Priority",
+              "value": inc.priority
+            },
+            {
+              "title": "Assignment Group",
+              "value": inc.assignment_group
+            },
+            {
+              "title": "Category",
+              "value": inc.category
+            },
+            {
+              "title": "Short Description",
+              "value": inc.short_description
+            }
+          ],
+          "footer": "SlackNow",
+          "footer_icon": "https://c74213ddaf67eb02dabb-04de5163e3f90393a9f7bb6f7f0967f1.ssl.cf1.rackcdn.com/V1~905b01b2326062159eeac981174af77e~kO62_TftSkSEWjj5xF-0Ig==",
+          "ts": Date.now()
+        }
+      ]
+    }
+    //post the message
+    web.chat.postMessage(message)
+    .then(res => console.log("Message sent: ", res.ts))
+    .catch(console.error);
+  });
+});
+
 // Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
 slackEvents.on('message', (event) => {
   console.log(event);
