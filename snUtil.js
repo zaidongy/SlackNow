@@ -3,11 +3,21 @@ const axios = require('axios');
 require('Buffer');
 
 const { SNUSERID: userid, SNPASSWORD: password } = process.env;
+const serviceNowHttpHeaders = {
+    
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Basic ${_getEncodedAuthorizationToken()}`
+    
+};
+const slackHttpHeaders = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    "Authorization": "Bearer " + process.env.SLACK_OAUTH_ACCESS_TOKEN
+};
 
 module.exports = {
     getTicketInfo : function(ticketNumber, callback) {
-        const credentialStr = `${userid}:${password}`;
-        const encodedCredentials = new Buffer(credentialStr, 'binary').toString('base64');
 
         var table = _getTable(ticketNumber);
         // console.log(table);
@@ -20,11 +30,7 @@ module.exports = {
             // 'hostname': 'csmcstage.service-now.com',
             // 'port': null,
             // 'path': `/api/now/table/${table}?sysparm_query=number%3D${ticketNumber}&sysparm_limit=1`,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Basic ${encodedCredentials}`
-            }
+            'headers': serviceNowHttpHeaders
         };
         axios.get(url, options)
         .then(res => {
@@ -54,19 +60,40 @@ module.exports = {
         return null;
     },
 
-        // Create Channel
-    createIncidentChannel: function(channelName, callback) {
-        var token = process.env.SLACK_OAUTH_ACCESS_TOKEN;
-        const url = 'https://slack.com/api/groups.create';
-        const body = {
-            "token": "Bearer " + token,
-            "name": channelName
-        };
-        axios.post(url, body)
-        .then(req => callback(res))
-        .catch(console.error);
+    // Create Channel
+    createIncidentChannel: function (channelName) {
+        return new Promise((resolve, reject) => {
+            const config = {
+                'method': 'post',
+                'url': 'https://slack.com/api/groups.create',
+                'data': {
+                    'name': channelName
+                },
+                'headers': slackHttpHeaders
+            }
+            axios(config)
+            .then(res => resolve(res) )
+            .catch(err => { reject(err) } );
+        });
+    },
+
+    inviteToChannel : function(slackChannelId, slackUserId) {
+        return new Promise((resolve, reject) => {
+            const config = {
+                'method' : 'post',
+                'url' : 'https://slack.com/api/groups.invite',
+                'data' : {
+                    'channel': slackChannelId,
+                    'user': slackUserId
+                },
+                'headers': slackHttpHeaders
+            };
+            axios(config)
+            .then(res => resolve(res))
+            .catch(err => reject(err));
+        });
     }
-}
+};
 
 // Private
 function _getTable(n) {
@@ -75,4 +102,9 @@ function _getTable(n) {
     else if (n.startsWith('INC')) return 'incident';
     else if (n.startsWith('CHG')) return 'change_request';
     else return null;
+}
+
+function _getEncodedAuthorizationToken() {
+    const credentialStr = `${userid}:${password}`;
+    return new Buffer(credentialStr, 'binary').toString('base64');
 }
