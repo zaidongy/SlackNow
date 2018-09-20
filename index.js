@@ -58,7 +58,7 @@ app.post('/api/incident', (req, response) => {
               "color": "danger",
               "pretext": `Priority 1 ${inc.number} has been created.`,
               "title": inc.number,
-              "title_link": inc.sn_link,
+              "title_link": inc.link,
               "fields": [
                 {
                   "title": "State",
