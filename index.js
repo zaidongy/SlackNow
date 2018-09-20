@@ -51,12 +51,12 @@ app.post('/api/incident', (req, response) => {
 
         var message = {
           "channel": res.data.group.id,
-          "text": inc.number,
+          "text": `Priority 1 ${inc.number} has been created.`,
           "attachments": [
             {
               "fallback": `${inc.number}: ${inc.short_description}`,
               "color": "danger",
-              "pretext": `Priority 1 ${inc.number} has been created.`,
+              // "pretext": `Priority 1 ${inc.number} has been created.`,
               "title": inc.number,
               "title_link": inc.link,
               "fields": [
