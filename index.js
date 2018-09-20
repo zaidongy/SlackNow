@@ -30,9 +30,9 @@ app.get('/', (req, res) => {
   // return res.status(200).sendFile(path.resolve(__dirname, "example.html"));
 });
 
-app.user('/api', express.json());
+app.use('/api', express.json());
 app.post('/api', (req,res) => {
-  console.log(res.body);
+  console.log(req.body);
 });
 
 app.use('/api/incident', express.json());
