@@ -21,10 +21,6 @@ app.use(express.json());
 // Initialize a SN Utility Object
 const snUtils = require("./snUtil");
 
-// Mount the event handler on a route
-// NOTE: you must mount to a path that matches the Request URL that was configured earlier
-app.use('/slack/events', slackEvents.expressMiddleware());
-
 app.get('/', (req, res) => {
   res.send("ServiceNow Slack Integration Endpoint: https://crispychris.herokuapp.com/slack/events");
   // return res.status(200).sendFile(path.resolve(__dirname, "example.html"));
@@ -123,11 +119,14 @@ app.post('/api/incident', (req, response) => {
       response.status(400).send(err);
     });
 });
+// Mount the event handler on a route
+// NOTE: you must mount to a path that matches the Request URL that was configured earlier
+app.use('/slack/events', slackEvents.expressMiddleware());
 
 // Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
 slackEvents.on('message', (event) => {
   console.log(event);
-  if (event.subtype != 'bot_message' && event.subtype != 'channel_join') {
+  if (event.subtype != 'bot_message') {
 
     //get the ticketNumber and lookup information on it
     var ticket = snUtils.getTicketNumber(event.text);
