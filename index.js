@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
 app.use('/api', express.json());
 app.post('/api', (req,res) => {
   console.log(req.body);
+  res.status(200).send(req.body);
 });
 
 app.use('/api/incident', express.json());
