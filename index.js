@@ -66,8 +66,8 @@ app.post('/api/incident', (req, response) => {
                   "short": true
                 },
                 {
-                  "title": "Assigned to",
-                  "value": inc.assigned_to,
+                  "title": "Configuration Item",
+                  "value": inc.cmdb_ci,
                   "short": true
                 },
                 {
