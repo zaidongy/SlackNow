@@ -124,8 +124,7 @@ app.use('/slack/events', slackEvents.expressMiddleware());
 // Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
 slackEvents.on('message', (event) => {
   console.log(event);
-  if (event.subtype != 'bot_message' && event.subtype != 'channel_join') {
-
+  if (!event.subtype) { //event.subtype != 'bot_message' && event.subtype != 'channel_join'
     //get the ticketNumber and lookup information on it
     var ticket = snUtils.getTicketNumber(event.text);
     if (ticket) {
