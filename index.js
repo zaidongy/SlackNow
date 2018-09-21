@@ -13,10 +13,6 @@ const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET);
 // const slackEvents = createEventAdapter(secret);
 const port = process.env.PORT || 3000;
 
-// Mount the event handler on a route
-// NOTE: you must mount to a path that matches the Request URL that was configured earlier
-app.use('/slack/events', slackEvents.expressMiddleware());
-
 // Initialize an Express application
 const express = require('express');
 const app = express();
@@ -122,10 +118,13 @@ app.post('/api/incident', (req, response) => {
     });
 });
 
+// Mount the event handler on a route
+// NOTE: you must mount to a path that matches the Request URL that was configured earlier
+app.use('/slack/events', slackEvents.expressMiddleware());
 // Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
 slackEvents.on('message', (event) => {
   console.log(event);
-  if (event.subtype != 'bot_message') {
+  if (event.subtype != 'bot_message' && event.subtype != 'channel_join') {
 
     //get the ticketNumber and lookup information on it
     var ticket = snUtils.getTicketNumber(event.text);
