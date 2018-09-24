@@ -38,6 +38,7 @@ module.exports = {
                 if (res.data.result.length > 0) {
                     var ticketInfo = res.data.result[0];
                     ticketInfo.table = table;
+                    ticketInfo.link = "https://csmc.service-now.com";
                     return callback(ticketInfo);
                 }
                 else
