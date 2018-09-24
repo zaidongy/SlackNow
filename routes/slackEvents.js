@@ -58,7 +58,7 @@ function _handleMessageOrMentionEvent(event) {
     var ticket = snUtils.getTicketNumber(event.text);
     if (ticket) {
       snUtils.getTicketInfo(ticket, res => {
-        console.log(res);
+        // console.log(res);
         if (res)
           web.chat.postMessage(
             snUtils.buildMessage(event.channel, res, res.table))
