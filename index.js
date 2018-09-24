@@ -2,7 +2,7 @@
 require("dotenv").config();
 const http = require("http");
 const port = process.env.PORT || 3000;
-console.log(port);
+const path = require('path');
 
 // Initialize an Express application
 const express = require("express");
@@ -11,7 +11,7 @@ const app = express();
 // Default welcome page
 app.get("/", (req, res) => {
   // return res.send("ServiceNow Slack Integration Endpoint: https://crispychris.herokuapp.com/slack/events");
-  return res.status(200).sendFile(path.resolve(__dirname, "example.html"));
+  return res.status(200).sendFile(path.resolve(__dirname, "index.html"));
 });
 
 // Create router instances
