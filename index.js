@@ -10,10 +10,8 @@ const app = express();
 
 // Default welcome page
 app.get("/", (req, res) => {
-  res.send(
-    "ServiceNow Slack Integration Endpoint: https://crispychris.herokuapp.com/slack/events"
-  );
-  // return res.status(200).sendFile(path.resolve(__dirname, "example.html"));
+  // return res.send("ServiceNow Slack Integration Endpoint: https://crispychris.herokuapp.com/slack/events");
+  return res.status(200).sendFile(path.resolve(__dirname, "example.html"));
 });
 
 // Create router instances
