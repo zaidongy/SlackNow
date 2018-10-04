@@ -18,36 +18,11 @@ router.use("/", slackEvents.expressMiddleware());
 
 // Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
 slackEvents.on("app_mention", event => {
-  _handleMessageOrMentionEvent(event);
-  // console.log(event);
-  // if (!event.subtype) {
-  //   //event.subtype != 'bot_message' && event.subtype != 'channel_join'
-  //   //get the ticketNumber and lookup information on it
-  //   var ticket = snUtils.getTicketNumber(event.text);
-  //   if (ticket) {
-  //     snUtils.getTicketInfo(ticket, res => {
-  //       console.log(res);
-  //       if (res)
-  //         web.chat.postMessage(
-  //           snUtils.buildMessage(event.channel, res, res.table))
-  //           .then(res => { console.log("Message sent: ", res.ts); })
-  //           .catch(console.error);
-  //     });
-
-  //   } else {
-  //     web.chat.postMessage({
-  //       channel: event.channel,
-  //       text: "Hey there, try giving me a ticket number."
-  //     })
-  //       .then(console.log("Unhandled query: ", event.text))
-  //       .catch(console.error);
-  //   }
-  // }
-  // // console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
+  _handleMessageOrMentionEvent2(event);
 });
 
 slackEvents.on('message', event => {
-  _handleMessageOrMentionEvent(event);
+  _handleMessageOrMentionEvent2(event);
 });
 
 function _handleMessageOrMentionEvent(event) {
@@ -75,7 +50,21 @@ function _handleMessageOrMentionEvent(event) {
         .catch(console.error);
     }
   }
-  // console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
+}
+
+function _handleMessageOrMentionEvent2(event) {
+  console.log(event);
+  if (!event.subtype) {
+    // event.subtype != 'bot_message' && event.subtype != 'channel_join'
+    // Chain Promises to execute sequence of events
+    snUtils.getTicketNumber(event.text)
+      .then(number => snUtils.getTicketInfo(number))
+      .then(info => web.chat.postMessage(snUtils.buildMessage(event.channel, info, info.table)))
+      .catch(() => {
+        console.error;
+        web.chat.postMessage({ channel: event.channel, text: "Hey there, try giving me a ticket number." })
+    });
+  }
 }
 
 slackEvents.on("reaction_added", event => {

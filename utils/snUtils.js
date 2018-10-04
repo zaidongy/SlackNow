@@ -17,17 +17,17 @@ const slackHttpHeaders = {
 };
 
 module.exports = {
-    getTicketInfo: function (ticketNumber, callback) {
+    getTicketInfo: function (ticketNumber) {
 
         var table = _getTable(ticketNumber);
         // console.log(table);
         // console.log(ticketNumber);
-        if (!table) return callback(null);
+        if (!table) reject("Incorrect Table specified");
 
-        const url = `https://csmcstage.service-now.com/api/now/table/${table}?sysparm_query=number%3D${ticketNumber}&sysparm_limit=1&sysparm_display_value=true&sysparm_exclude_reference_link=true`;
+        const url = `https://csmcdev.service-now.com/api/now/table/${table}?sysparm_query=number%3D${ticketNumber}&sysparm_limit=1&sysparm_display_value=true&sysparm_exclude_reference_link=true`;
         const options = {
             'method': 'GET',
-            // 'hostname': 'csmcstage.service-now.com',
+            // 'hostname': 'csmcdev.service-now.com',
             // 'port': null,
             // 'path': `/api/now/table/${table}?sysparm_query=number%3D${ticketNumber}&sysparm_limit=1`,
             'headers': serviceNowHttpHeaders
@@ -39,7 +39,7 @@ module.exports = {
                     var ticketInfo = res.data.result[0];
                     ticketInfo.table = table;
                     ticketInfo.link = "https://csmc.service-now.com";
-                    return callback(ticketInfo);
+                    resolve(ticketInfo);
                 }
                 else
                     return callback(null);
