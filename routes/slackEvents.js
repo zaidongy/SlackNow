@@ -61,8 +61,8 @@ function _handleMessageOrMentionEvent2(event) {
       .then(number => snUtils.getTicketInfo(number))
       .then(info => web.chat.postMessage(snUtils.buildMessage(event.channel, info, info.table)))
       .catch(() => {
+        web.chat.postMessage({ channel: event.channel, text: "Hey there, try giving me a ticket number." });
         console.error;
-        web.chat.postMessage({ channel: event.channel, text: "Hey there, try giving me a ticket number." })
     });
   }
 }
