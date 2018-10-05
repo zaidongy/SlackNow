@@ -15,7 +15,25 @@ router.post("/", (req, res) => {
 });
 
 router.use("/incident", express.json());
+
 router.post("/incident", (req, response) => {
+  var inc = req.body;
+  // console.log(inc);
+
+  snUtils.createIncidentChannel(inc.number)
+    .then(res => snUtils.inviteToChannel(res.data.group.id, process.env.SLACK_BOT_USER_ID))
+    .then(() => {
+      var message = snUtils.buildMessage(res.data.group.id, inc, 'incident');
+      web.chat.postMessage(message);
+      return response.status(200).send("Message Posted");
+    })
+    .catch(err => {
+      console.log("Error creating incident group: " + err);
+      response.status(400).send(err);
+    });
+});
+
+router.post("/incidents", (req, response) => {
   var inc = req.body;
   console.log(inc);
 
