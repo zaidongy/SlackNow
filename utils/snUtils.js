@@ -35,7 +35,7 @@ module.exports = {
             };
             axios.get(url, options)
                 .then(res => {
-                    // console.log(res.data.result);
+                    console.log(res.data.result);
                     if (res.data.result.length > 0) {
                         var ticketInfo = res.data.result[0];
                         ticketInfo.table = table;
@@ -71,7 +71,7 @@ module.exports = {
         };
         axios.get(url, options)
             .then(res => {
-                console.log(res.data.result);
+                // console.log(res.data.result);
                 if (res.data.result.length > 0) {
                     var ticketInfo = res.data.result[0];
                     ticketInfo.table = table;
