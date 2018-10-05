@@ -57,9 +57,9 @@ function _handleMessageOrMentionEvent2(event) {
   if (!event.subtype) {
     // event.subtype != 'bot_message' && event.subtype != 'channel_join'
     // Chain Promises to execute sequence of events
-    snUtils.getTicketNumber(event.text)
-      .then(number => snUtils.getTicketInfoPromise(number))
-      .catch(console.error)
+    var number = snUtils.getTicketNumber(event.text);
+    
+    snUtils.getTicketInfoPromise(number)
       .then(info => web.chat.postMessage(snUtils.buildMessage(event.channel, info, info.table)))
       .catch(() => {
         web.chat.postMessage({ channel: event.channel, text: "Hey there, try giving me a ticket number." });

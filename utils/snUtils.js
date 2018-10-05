@@ -40,7 +40,7 @@ module.exports = {
                         var ticketInfo = res.data.result[0];
                         ticketInfo.table = table;
                         ticketInfo.link = `https://csmc.service-now.com`;
-                        resolve(ticketInfo);
+                        return resolve(ticketInfo);
                     }
                     else
                         return reject("No Data returned from ServiceNow");
