@@ -17,6 +17,43 @@ const slackHttpHeaders = {
 };
 
 module.exports = {
+
+    getTicketInfoPromise: function (ticketNumber) {
+        return new Promise((resolve, reject) => {
+            var table = _getTable(ticketNumber);
+            // console.log(table);
+            // console.log(ticketNumber);
+            if (!table) reject("Incorrect Table specified");
+
+            const url = `https://csmcdev.service-now.com/api/now/table/${table}?sysparm_query=number%3D${ticketNumber}&sysparm_limit=1&sysparm_display_value=true&sysparm_exclude_reference_link=true`;
+            const options = {
+                'method': 'GET',
+                // 'hostname': 'csmcdev.service-now.com',
+                // 'port': null,
+                // 'path': `/api/now/table/${table}?sysparm_query=number%3D${ticketNumber}&sysparm_limit=1`,
+                'headers': serviceNowHttpHeaders
+            };
+            axios.get(url, options)
+                .then(res => {
+                    // console.log(res.data.result);
+                    if (res.data.result.length > 0) {
+                        var ticketInfo = res.data.result[0];
+                        ticketInfo.table = table;
+                        ticketInfo.link = `https://csmc.service-now.com`;
+                        resolve(ticketInfo);
+                    }
+                    else
+                        reject("No Data returned from ServiceNow");
+
+                })
+                .catch(err => {
+                    console.error;
+                    reject("Not able to make REST Call");
+                });
+        });
+
+    },
+
     getTicketInfo: function (ticketNumber) {
 
         var table = _getTable(ticketNumber);
@@ -34,7 +71,7 @@ module.exports = {
         };
         axios.get(url, options)
             .then(res => {
-                // console.log(res.data.result);
+                console.log(res.data.result);
                 if (res.data.result.length > 0) {
                     var ticketInfo = res.data.result[0];
                     ticketInfo.table = table;
