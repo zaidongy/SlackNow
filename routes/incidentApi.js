@@ -18,12 +18,12 @@ router.use("/incident", express.json());
 
 router.post("/incident", (req, response) => {
   var inc = req.body;
-  // console.log(inc);
-
   snUtils.createIncidentChannel(inc.number)
-    .then(res => snUtils.inviteToChannel(res.data.group.id, process.env.SLACK_BOT_USER_ID))
-    .then(() => {
+    .then(res => {
       var message = snUtils.buildMessage(res.data.group.id, inc, 'incident');
+      snUtils.inviteToChannel(res.data.group.id, process.env.SLACK_BOT_USER_ID) 
+    })
+    .then(() => {
       web.chat.postMessage(message);
       return response.status(200).send("Message Posted");
     })
