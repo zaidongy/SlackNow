@@ -23,7 +23,7 @@ module.exports = {
             var table = _getTable(ticketNumber);
             // console.log(table);
             // console.log(ticketNumber);
-            if (!table) reject("Incorrect Table specified");
+            if (!table) return reject("Incorrect Table specified");
 
             const url = `https://csmcdev.service-now.com/api/now/table/${table}?sysparm_query=number%3D${ticketNumber}&sysparm_limit=1&sysparm_display_value=true&sysparm_exclude_reference_link=true`;
             const options = {
@@ -43,12 +43,12 @@ module.exports = {
                         resolve(ticketInfo);
                     }
                     else
-                        reject("No Data returned from ServiceNow");
+                        return reject("No Data returned from ServiceNow");
 
                 })
                 .catch(err => {
                     console.error;
-                    reject("Not able to make REST Call");
+                    return reject("Not able to make REST Call");
                 });
         });
 

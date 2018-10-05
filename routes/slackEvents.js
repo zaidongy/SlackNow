@@ -59,6 +59,7 @@ function _handleMessageOrMentionEvent2(event) {
     // Chain Promises to execute sequence of events
     snUtils.getTicketNumber(event.text)
       .then(number => snUtils.getTicketInfoPromise(number))
+      .catch(console.error)
       .then(info => web.chat.postMessage(snUtils.buildMessage(event.channel, info, info.table)))
       .catch(() => {
         web.chat.postMessage({ channel: event.channel, text: "Hey there, try giving me a ticket number." });
