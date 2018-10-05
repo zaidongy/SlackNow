@@ -20,6 +20,7 @@ router.post("/incident", (req, response) => {
   var inc = req.body;
   snUtils.createIncidentChannel(inc.number)
     .then(res => {
+      console.log(res.data);
       return new Promise((resolve) => {
         var message = snUtils.buildMessage(res.data.group.id, inc, 'incident');
         snUtils.inviteToChannel(res.data.group.id, process.env.SLACK_BOT_USER_ID);
@@ -31,9 +32,9 @@ router.post("/incident", (req, response) => {
       return response.status(200).send("Message Posted");
     })
     .catch(err => {
-      console.log("Error creating incident group!");
-      console.error;
-      response.status(400).send(err);
+      console.log("Error creating incident group! " + err);
+      // console.error;
+      // response.status(400).send(err);
     });
 });
 
