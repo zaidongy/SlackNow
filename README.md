@@ -1,4 +1,4 @@
-![](asset\images/SlackNow.png)
+<img src="asset/images/SlackNow.png" alt="SlackNow Logo" width="300" height="100">
 
 # SlackNow
 Slacknow is backend webserver to enable communication between Slack and ServiceNow to create a better user experience for the organization.
