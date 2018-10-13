@@ -55,4 +55,4 @@ Conditions =  [Priority = 1] or [Priority changes to 1]
 ```
 
 ## Author
-  [Chris Yang](https://twitter.com/zaidongy) (EIS Systems Analyst, Cedars-Sinai EIS)
+  [Chris Yang](https://chrisyang.io) (EIS Systems Analyst, Cedars-Sinai)
