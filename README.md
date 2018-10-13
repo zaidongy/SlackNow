@@ -1,6 +1,6 @@
-<img src="asset/images/SlackNow.png" alt="SlackNow Logo" width="300" height="100">
+<img src="https://www.logolynx.com/images/logolynx/48/488a20b19719e45473c653986acea1a5.png" alt="SlackNow Logo" width="50" height="50"> SlackNow
+=======================
 
-# SlackNow
 Slacknow is backend webserver to enable communication between Slack and ServiceNow to create a better user experience for the organization.
 
 ## Intended Features (more to come):
