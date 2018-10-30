@@ -31,7 +31,7 @@ Conditions =  [Priority = 1] or [Priority changes to 1]
 
 (function executeRule(current, previous /*null when async*/) {
     var sm = new sn_ws.RESTMessageV2();
-    sm.setEndpoint('https://crispychris.herokuapp.com/api/incident'); //End point to receive the incident JSON payload
+    sm.setEndpoint('https://your-web-server/api/incident'); //End point to receive the incident JSON payload
     sm.setHttpMethod('POST');
     sm.setRequestHeader("Content-Type", "application/json");
     sm.setRequestHeader('Accept', 'application/json');
