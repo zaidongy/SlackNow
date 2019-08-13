@@ -13,10 +13,10 @@
     "@slack/client": "^4.6.0",
     "@slack/events-api": "^2.1.0",
     "Buffer": "0.0.0",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
-    "npm": "^6.4.1"
+    "npm": "^6.10.3"
   },
   "engines": {
     "node": "8.12.0"
