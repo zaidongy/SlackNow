@@ -18,34 +18,59 @@ router.use("/", slackEvents.expressMiddleware());
 
 // Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
 slackEvents.on("app_mention", event => {
-    _handleMessageOrMentionEvent2(event);
+    _handleMessageOrMentionEvent(event);
 });
 
 slackEvents.on("message", event => {
-    _handleMessageOrMentionEvent2(event);
+    _handleMessageOrMentionEvent(event);
 });
 
-function _handleMessageOrMentionEvent2(event) {
+function _handleMessageOrMentionEvent(event) {
     console.log(event);
     if (!event.subtype) {
         // event.subtype != 'bot_message' && event.subtype != 'channel_join'
         // Chain Promises to execute sequence of events
         var number = snUtils.getTicketNumber(event.text.toUpperCase());
+        var hasApproval = snUtils.hasApprovalIntent(event.text.toLowerCase());
         // console.log(number);
-        snUtils
-            .getTicketInfoPromise(number)
-            .then(info =>
-                web.chat.postMessage(
-                    snUtils.buildMessage(event.channel, info, info.table)
-                )
-            )
-            .catch(() => {
-                web.chat.postMessage({
-                    channel: event.channel,
-                    text: "Hey there, try giving me a ticket number."
+
+        if (hasApproval) {
+            console.log("User intent: Approval");
+            snUtils
+                .getMyApprovals()
+                .then(approvalList => {
+                    for (approval of approvalList) {
+                        web.chat.postMessage(
+                            snUtils.buildApprovalMessage(
+                                event.channel,
+                                approval
+                            )
+                        );
+                    }
+                })
+                .catch(msg => {
+                    web.chat.postMessage({
+                        channel: event.channel,
+                        text: msg
+                    });
                 });
-                console.error;
-            });
+        } else {
+            console.log("User intent: TIcket Info");
+            snUtils
+                .getTicketInfoPromise(number)
+                .then(info =>
+                    web.chat.postMessage(
+                        snUtils.buildMessage(event.channel, info, info.table)
+                    )
+                )
+                .catch(() => {
+                    web.chat.postMessage({
+                        channel: event.channel,
+                        text: "Hey there, try giving me a ticket number."
+                    });
+                    console.error;
+                });
+        }
     }
 }
 

@@ -17,8 +17,8 @@ const slackHttpHeaders = {
 module.exports = {
     getTicketInfoPromise: function(ticketNumber) {
         return new Promise((resolve, reject) => {
-            var table = _getTable(ticketNumber);
-            var instance = process.env.SNENV;
+            let table = _getTable(ticketNumber);
+            let instance = process.env.SNENV;
 
             // console.log(table);
             // console.log(ticketNumber);
@@ -43,7 +43,6 @@ module.exports = {
                 })
                 .catch(err => {
                     console.error;
-                    console.log("Can't make REST call");
                     return reject("Not able to make REST Call");
                 });
         });
@@ -233,6 +232,81 @@ module.exports = {
         msg.attachments = [attachmentJSON];
 
         return msg;
+    },
+
+    getMyApprovals: function() {
+        return new Promise((resolve, reject) => {
+            let instance = process.env.SNENV;
+            let table = "sysapproval_approver";
+            const url = `https://${instance}.service-now.com/api/now/table/${table}?sysparm_query=state%3Drequested%5Eapprover%3D2f5cce24db033300c2b22946489619e3&sysparm_display_value=true&sysparm_limit=10`;
+            const options = {
+                method: "GET",
+                headers: serviceNowHttpHeaders
+            };
+            axios
+                .get(url, options)
+                .then(res => {
+                    console.log(res.data.result);
+                    if (res.data.result.length > 0)
+                        return resolve(res.data.result);
+                    else return reject("There are no pending approvals");
+                })
+                .catch(err => {
+                    console.log(err);
+                    reject(err);
+                });
+        });
+    },
+
+    buildApprovalMessage: function(eventChannel, ticketJSON) {
+        return {
+            text: `<${ticketJSON.sysapproval.link}|${
+                ticketJSON.sysapproval.display_value
+            }>`,
+            channel: eventChannel,
+            attachments: [
+                {
+                    text: "Please approve or reject",
+                    fallback: ticketJSON.sysapproval.display_value,
+                    color: "#0000ff",
+                    attachment_type: "default",
+                    fields: [
+                        {
+                            title: "Approver",
+                            value: ticketJSON.approver.display_value
+                        },
+                        {
+                            title: "Number",
+                            value: ticketJSON.sysapproval.display_value
+                        }
+                    ],
+                    actions: [
+                        {
+                            name: "approve",
+                            text: "Approve",
+                            type: "button",
+                            value: "approve",
+                            style: "success"
+                        },
+                        {
+                            name: "reject",
+                            text: "Reject",
+                            type: "button",
+                            value: "reject",
+                            style: "danger"
+                        }
+                    ]
+                }
+            ]
+        };
+    },
+
+    hasApprovalIntent: function(text) {
+        if (text.includes("approval") || text.includes("approvals")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 };
 
