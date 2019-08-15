@@ -1,14 +1,16 @@
 # <img src="asset\images\SlackNowLogo.png" alt="SlackNow Logo" width="50" height="50"> SlackNow
 
-Slacknow is backend webserver to enable communication between Slack and ServiceNow to create a better user experience for the organization.
+SlackNow is a backend webserver to enable communication between Slack and ServiceNow to create a better user experience for the organization.
 
-## Intended Features (more to come):
+## Intended Features
 
 - Display information for a specific ticket
 - Automatically create group channels for p1 incidents
 - Display user pending approvals with interactive messages (approve or reject)
 
-## Environment Variables need to be defined
+## Environment variables need to be defined
+
+Configure your server to have the following enrionment variables, since these are senstive information it should not be hard coded or stored in a file.
 
 - SLACK_BOT_USER_ID : _Bot user ID in Slack_
 - SLACK_OAUTH_ACCESS_TOKEN : _Slack's Custom application's OATH token_
@@ -61,4 +63,4 @@ Conditions =  [Priority = 1] or [Priority changes to 1]
 
 ## Author
 
-[Chris Yang](https://chrisyang.io) (EIS Systems Analyst, Cedars-Sinai)
+[Chris Yang](https://chrisyang.io)

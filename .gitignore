@@ -4,3 +4,4 @@ node_modules/
 example.html
 test*
 test2.js
+.prettierignore
