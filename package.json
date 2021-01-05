@@ -13,7 +13,7 @@
         "@slack/client": "^4.6.0",
         "@slack/events-api": "^2.1.0",
         "Buffer": "0.0.0",
-        "axios": "^0.18.1",
+        "axios": "^0.21.1",
         "dotenv": "^6.0.0",
         "express": "^4.16.3",
         "npm": "^6.10.3"
